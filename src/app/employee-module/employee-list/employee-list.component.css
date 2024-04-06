@@ -1,0 +1,18 @@
+.card-table {
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+    justify-content: space-between;
+    padding: 10px;
+    /* border-color: #fc0ed6; */
+}
+
+.export {
+    color: #fc0ed6;
+}
+
+.btns {
+    width: 18%;
+    display: flex;
+    justify-content: space-between;
+}
