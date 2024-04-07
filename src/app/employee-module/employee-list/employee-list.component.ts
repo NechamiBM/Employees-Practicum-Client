@@ -11,20 +11,22 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit {
-  employees: Employee[];
+  employees: Employee[] = [];
   visibility: string;
   searchInput: Subject<string> = new Subject<string>();
   searchText: string = '';
 
   deleteEmployee(employee: Employee) {
-    console.log("delete", employee);
+    this._employeeService.deleteEmployee(employee.id).subscribe(() => {
+      this.employees = this.employees.filter(e => e.id != employee.id)
+    }, err => console.log("err", err))
   }
 
   editEmployee(employee: Employee) {
     console.log("edit", employee);
   }
 
-  filterEmployees(): void {
+  filterEmployees() {
     this.searchInput.pipe(
       debounceTime(1000),
       distinctUntilChanged(),
@@ -36,21 +38,21 @@ export class EmployeeListComponent implements OnInit {
     this.searchInput.next(this.searchText);
   }
 
-  exportToExcel(): void {
+  exportToExcel() {
     this._employeeService.getEmployees().subscribe(data => {
       console.log("data", data);
       const workbook = XLSX.utils.book_new();
       const newData = data.map(emp => ({
-        id: emp.id, firstName: emp.firstName, lastName: emp.lastName, identity: emp.identity, startWorkDate: emp.startWorkDate, birthDate: emp.birthDate, gender:Gender[emp.gender]
+        id: emp.id, firstName: emp.firstName, lastName: emp.lastName, identity: emp.identity, startWorkDate: emp.startWorkDate, birthDate: emp.birthDate, gender: Gender[emp.gender]
       }));
       const mainWorksheet = XLSX.utils.json_to_sheet(newData);
-      XLSX.utils.book_append_sheet(workbook, mainWorksheet, 'Employees');
+      XLSX.utils.book_append_sheet(workbook, mainWorksheet, 'Employee List');
       data.forEach((employee, index) => {
         const rolesData = employee.roles.map(role => ({
           role: role.roleType.name, startDate: role.startDate, isAdministrative: role.isAdministrative
         }));
         const rolesWorksheet = XLSX.utils.json_to_sheet(rolesData);
-        XLSX.utils.book_append_sheet(workbook, rolesWorksheet, `${index + 1}_${employee.firstName}_${employee.lastName}_Roles`);
+        XLSX.utils.book_append_sheet(workbook, rolesWorksheet, `${employee.id}_${employee.firstName}_${employee.lastName}_Roles`);
       });
       XLSX.writeFile(workbook, 'employees.xlsx');
     });
@@ -59,7 +61,9 @@ export class EmployeeListComponent implements OnInit {
   constructor(private _employeeService: EmployeeService) { }
 
   ngOnInit(): void {
-    this._employeeService.getEmployees().subscribe(data => this.employees = data);
+    this._employeeService.getEmployees().subscribe(data => {
+      this.employees = data;
+    });
     this.loadFromLocalStorage();
     this.filterEmployees();
   }

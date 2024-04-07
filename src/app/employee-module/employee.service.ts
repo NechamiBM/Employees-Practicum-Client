@@ -11,11 +11,10 @@ export class EmployeeService {
         let params = new HttpParams();
         if (filter)
             params = params.set('filter', filter);
-        return this._http.get<Employee[]>("/api/Employee", { params: params });
+        return this._http.get<Employee[]>("/api/Employees", { params: params });
     }
 
-    getEmployees1(filter: string): Observable<Employee[]> {
-        console.log("get in service");
-        return this._http.get<Employee[]>("/api/Employee");
+    deleteEmployee(id: number) {
+        return this._http.delete("/api/Employees/" + id);
     }
 }
