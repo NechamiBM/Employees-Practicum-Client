@@ -7,7 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  title = 'Employees - Management';
   data = {
     email: 'n7110315@gmail.com',
     subject: "פרויקט אתר לניהול עובדים"

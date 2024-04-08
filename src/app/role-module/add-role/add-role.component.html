@@ -1,0 +1,8 @@
+<form>
+    <div class="mb-3">
+        <label for="roleName" class="form-label">Enter role to add</label>
+        <input type="text" class="form-control" id="roleName" name="roleName" [(ngModel)]="name">
+    </div>
+    <button (click)="confirm()" type="button" class="btn btn-primary save">Save</button>
+    <button (click)="cancel()" type="button" class="btn btn-danger">Cancel</button>
+</form>

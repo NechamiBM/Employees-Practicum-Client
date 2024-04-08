@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee, Gender } from '../../models/employee.model';
 import { EmployeeService } from '../employee.service';
-import { RoleService } from '../role.service';
+import { RoleService } from '../../role-module/role.service';
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import * as XLSX from 'xlsx';
 

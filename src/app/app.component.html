@@ -1,25 +1,4 @@
-<div class="toolbar card-container" role="banner">
-
-  <img width="90" alt="Logo" src="../assets/img/logo_s1.png" />
-
-  <button class="card card-small" tabindex="0" routerLink="addEmployee">
-    <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-    </svg>
-    <p>להוספת עובד</p>
-  </button>
-
-  <h5>{{ title }}</h5>
-
-  <button class="card card-small" tabindex="0" routerLink="employeeList">
-    <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-    </svg>
-    <span>רשימת העובדים</span>
-  </button>
-
-</div>
-
+<app-header></app-header>
 <div class="content" role="main">
 
   <router-outlet></router-outlet>

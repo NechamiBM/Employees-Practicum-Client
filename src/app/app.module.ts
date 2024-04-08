@@ -7,10 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from "@angular/common/http";
 import { ReactiveFormsModule } from "@angular/forms";
+import { HeaderComponent } from './header/header.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AddRoleComponent } from './role-module/add-role/add-role.component';
+import { RoleModule } from './role-module/role.module';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, EmployeeModule, BrowserAnimationsModule, NgbModule, HttpClientModule, ReactiveFormsModule],
+  declarations: [AppComponent, HeaderComponent],
+  imports: [BrowserModule, AppRoutingModule, EmployeeModule,RoleModule, BrowserAnimationsModule, NgbModule, HttpClientModule, ReactiveFormsModule,MatDialogModule ],
   providers: [],
   bootstrap: [AppComponent]
 })

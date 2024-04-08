@@ -6,13 +6,13 @@ import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { EmployeeService } from './employee.service';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
-import { RoleService } from './role.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SearchBarComponent } from './search-bar/search-bar.component';
 
 @NgModule({
-  declarations: [EmployeeListComponent, AddEmployeeComponent],
-  imports: [CommonModule, BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, HttpClientModule],
-  providers: [EmployeeService, RoleService],
+  declarations: [EmployeeListComponent, AddEmployeeComponent, SearchBarComponent],
+  imports: [CommonModule, BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
+  providers: [EmployeeService],
   exports: [EmployeeListComponent, AddEmployeeComponent]
 })
 
