@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Employee, Gender } from '../../models/employee.model';
 import { EmployeeService } from '../employee.service';
-import { RoleService } from '../../role-module/role.service';
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import * as XLSX from 'xlsx';
+import { Employee, Gender } from 'src/app/models/employee.model';
 
 @Component({
   selector: 'employee-list',
@@ -60,7 +59,7 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(private _employeeService: EmployeeService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this._employeeService.getEmployees().subscribe(data => {
       this.employees = data;
     });

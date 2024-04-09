@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { RoleService } from '../role.service';
+import { RoleType } from 'src/app/models/roleType.model';
 
 @Component({
   selector: 'add-role',
@@ -13,7 +14,7 @@ export class AddRoleComponent {
   constructor(public dialogRef: MatDialogRef<AddRoleComponent>, private _roleService: RoleService) { }
 
   confirm() {
-    this._roleService.addRole({ id: 0, name: this.name }).subscribe()
+    this._roleService.addRole(this.name).subscribe();
     this.dialogRef.close(this.name);
   }
 
