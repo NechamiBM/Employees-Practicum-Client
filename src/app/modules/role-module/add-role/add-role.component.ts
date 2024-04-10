@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { RoleService } from '../role.service';
-import { RoleType } from 'src/app/models/roleType.model';
+import { RoleType } from 'src/models/roleType.model';
 
 @Component({
   selector: 'add-role',

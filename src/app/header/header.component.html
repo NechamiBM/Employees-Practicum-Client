@@ -4,25 +4,18 @@
 
     <h5>{{ title }}</h5>
 
-    <button class="card card-small" tabindex="0" routerLink="addEmployee" (click)="addEmployee()">
+    <button class="card card-small" tabindex="0" (click)="addEmployee()">
         <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
         </svg>
-        <p>להוספת עובד</p>
-    </button>
-
-    <button class="card card-small" tabindex="0" routerLink="employees">
-        <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-        </svg>
-        <span>רשימת העובדים</span>
+        <p>Add Employee</p>
     </button>
 
     <button class="card card-small" tabindex="0" (click)="addRole()">
         <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
         </svg>
-        <span>להוספת תפקיד</span>
+        <span>Add Role</span>
     </button>
 
     

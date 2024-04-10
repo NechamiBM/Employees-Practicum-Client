@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Employee, Gender } from 'src/app/models/employee.model';
-import { Role } from 'src/app/models/role.model';
-import { RoleType } from 'src/app/models/roleType.model';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Employee, Gender } from 'src/models/employee.model';
+import { Role } from 'src/models/role.model';
+import { RoleType } from 'src/models/roleType.model';
 import { RoleService } from '../../role-module/role.service';
 import { EmployeeService } from '../employee.service';
+import { MatDialogRef } from '@angular/material/dialog';
+import Swal from 'sweetalert2';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'employee-details',
@@ -18,27 +21,32 @@ export class EmployeeDetailsComponent {
   @Input()
   employee?: Employee;
 
+  formSubmitted: boolean = false;
+
   genders: Gender[] = [Gender.Male, Gender.Female];
+
   roleTypes: RoleType[];
 
-  constructor(private _roleService: RoleService, private _employeeService: EmployeeService, private _formBuilder: FormBuilder) { }
+  constructor(private _roleService: RoleService, private _employeeService: EmployeeService, private _formBuilder: FormBuilder, public dialogRef: MatDialogRef<EmployeeDetailsComponent>) { }
 
   ngOnInit(): void {
     this.initForm();
     this._roleService.getRoles().subscribe(data => {
       this.roleTypes = data;
-    })
+    });
+    const rolesArray = this.employeeForm.get('roles') as FormArray;
+    rolesArray.setValidators(this.uniqueRoleIdValidator());
   }
 
   initForm() {
     this.employeeForm = new FormGroup({
-      firstName: new FormControl(this.employee?.firstName, [Validators.required]),
-      lastName: new FormControl(this.employee?.lastName, [Validators.required]),
-      identity: new FormControl(this.employee?.identity, Validators.required),
-      startWorkDate: new FormControl(this.employee?.startWorkDate, Validators.required),
-      birthDate: new FormControl(this.employee?.birthDate, Validators.required),
+      firstName: new FormControl(this.employee?.firstName, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]),
+      lastName: new FormControl(this.employee?.lastName, [Validators.required, Validators.minLength(2), Validators.maxLength(10)]),
+      identity: new FormControl(this.employee?.identity, [Validators.required, Validators.pattern(/^\d{9}$/)]),
+      startWorkDate: new FormControl(this.employee?.startWorkDate, [Validators.required, this.startDateValidator]),
+      birthDate: new FormControl(this.employee?.birthDate, [Validators.required, this.birthDateValidator]),
       gender: new FormControl(this.employee?.gender, Validators.required),
-      roles: this._formBuilder.array(this.initRoles())
+      roles: this._formBuilder.array(this.initRoles() || [])
     });
   }
 
@@ -51,7 +59,7 @@ export class EmployeeDetailsComponent {
   createRoleFormGroup(role?: Role): FormGroup {
     return this._formBuilder.group({
       roleType: new FormControl(role?.roleType, Validators.required),
-      startDate: new FormControl(role?.startDate, Validators.required),
+      startDate: new FormControl(role?.startDate, [Validators.required, this.roleStartDateValidator]),
       isAdministrative: new FormControl(role?.isAdministrative)
     });
   }
@@ -67,6 +75,7 @@ export class EmployeeDetailsComponent {
   }
 
   saveEmployee() {
+    this.formSubmitted = true;
     if (this.employeeForm.valid) {
       const roles: Role[] = this.employeeForm.value.roles.map((role: Role) => {
         return { roleTypeId: 2, startDate: new Date(role.startDate), isAdministrative: role.isAdministrative ? role.isAdministrative : false };
@@ -81,21 +90,68 @@ export class EmployeeDetailsComponent {
         gender: parseInt(this.employeeForm.value.gender),
         roles: roles
       };
-      console.log("employee", employee);
-      this._employeeService.addEmployee(employee).subscribe();
+      console.log("id", employee.id);
+      if (employee.id == undefined)
+        this._employeeService.addEmployee(employee).subscribe({
+          next: () => {
+            this.dialogRef.close();
+            window.location.reload();
+          }, error: err => {
+            let error = "";
+            if (err instanceof HttpErrorResponse && err.error && err.error.errors)
+              for (const fieldName in err.error.errors)
+                if (err.error.errors.hasOwnProperty(fieldName))
+                  error = fieldName + ': ' + err.error.errors[fieldName];
+            Swal.fire({ icon: "error", title: "Oops...", text: "saving had failed\n" + error });
+          }
+        });
+      else {
+        this._employeeService.editEmployee(employee).subscribe();
+      }
     }
   }
 
+  close() {
+    this.dialogRef.close();
+  }
 
-  // private createEmployeeForm(): void {
-  //   this.employeeForm = new FormGroup({
-  //     firstName: new FormControl(this.employee?.firstName, [Validators.required]),
-  //     lastName: new FormControl(this.employee?.lastName, [Validators.required]),
-  //     identity: new FormControl(this.employee ?.identity , Validators.required),
-  //     startWorkDate: new FormControl(this.employee ?.startWorkDate , Validators.required),
-  //     birthDate: new FormControl(this.employee ?.birthDate , Validators.required),
-  //     gender: new FormControl(this.employee ?.gender , Validators.required),
-  //   });
-  // }
+  isInvalid(controlName: string) {
+    const control = this.employeeForm.get(controlName);
+    return control && control.invalid && (control.dirty || control.touched || this.formSubmitted);
+  }
+
+  isValid(controlName: string) {
+    const control = this.employeeForm.get(controlName);
+    return control && control.valid && (control.dirty);
+  }
+
+  startDateValidator(control: AbstractControl): { [key: string]: any } | null {
+    const currentDate = new Date();
+    const controlDate = new Date(control.value);
+    return controlDate > currentDate ? { 'startDate': true } : null;
+  }
+
+  birthDateValidator(control: AbstractControl): { [key: string]: any } | null {
+    const currentDate = new Date();
+    const birthDate = new Date(control.value);
+    const minBirthDate = new Date(currentDate.getFullYear() - 16, currentDate.getMonth(), currentDate.getDate());
+    return birthDate > minBirthDate ? { 'minAge': true } : null;
+  }
+
+  roleStartDateValidator(control: AbstractControl): { [key: string]: any } | null {
+    const startWorkDateControl = control.root.get('startWorkDate');
+    const roleStartDate = control.value;
+    return (roleStartDate && startWorkDateControl && new Date(roleStartDate) >= new Date(startWorkDateControl.value)) ? null : { 'roleStartDateInvalid': true };
+  }
+
+  uniqueRoleIdValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const rolesArray = control as FormArray;
+      var roleIds = rolesArray.controls.map((roleControl) => { return roleControl.get('roleType').value });
+      roleIds = roleIds.filter(x => x != "");
+      const isDuplicate = roleIds.some((roleId, index) => roleIds.indexOf(roleId) != index);
+      return isDuplicate ? { duplicateRoleId: true } : null;
+    };
+  }
 
 }

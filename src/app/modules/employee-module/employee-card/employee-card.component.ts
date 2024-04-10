@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Employee } from 'src/app/models/employee.model';
+import { Employee } from 'src/models/employee.model';
 
 @Component({
   selector: 'employee-card',

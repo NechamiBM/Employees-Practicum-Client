@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Employee } from 'src/app/models/employee.model';
+import { Employee } from 'src/models/employee.model';
 
 @Injectable()
 export class EmployeeService {
@@ -19,9 +19,14 @@ export class EmployeeService {
     }
 
     addEmployee(employee: Employee): Observable<void> {
-        // employee.startWorkDate = new Date(employee.startWorkDate).toISOString();
         console.log("add empolyee", employee);
         console.log("add rol", employee.roles);
         return this._http.post<void>("/api/Employees", employee);
+    }
+
+    editEmployee(employee: Employee): Observable<any> {
+        console.log("edit empolyee", employee);
+        // return this._http.post<void>("/api/Employees", employee);
+        return this._http.put<any>("/api/Employees/" + employee.id, employee);
     }
 }

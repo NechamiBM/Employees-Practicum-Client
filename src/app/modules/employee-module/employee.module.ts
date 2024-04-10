@@ -10,11 +10,16 @@ import { EmployeeCardComponent } from './employee-card/employee-card.component';
 import { EmployeeDetailsComponent } from './employee-details/employee-details.component';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { RoleService } from '../role-module/role.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDatepickerModule, matDatepickerAnimations } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [EmployeeListComponent, EmployeeTableComponent, EmployeeCardComponent, EmployeeDetailsComponent],
-  imports: [CommonModule, BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
-  providers: [EmployeeService,RoleService],
+  imports: [CommonModule, BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatDatepickerModule,MatNativeDateModule,],
+  providers: [EmployeeService, RoleService],
   exports: [EmployeeListComponent, EmployeeDetailsComponent]
 })
 

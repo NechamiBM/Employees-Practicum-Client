@@ -13,7 +13,7 @@ import { EmployeeModule } from './modules/employee-module/employee.module';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
-  imports: [BrowserModule, AppRoutingModule, EmployeeModule,RoleModule, BrowserAnimationsModule, NgbModule, HttpClientModule, ReactiveFormsModule,MatDialogModule],
+  imports: [BrowserModule, AppRoutingModule, EmployeeModule, RoleModule, BrowserAnimationsModule, NgbModule, HttpClientModule, ReactiveFormsModule, MatDialogModule],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,105 +1,109 @@
 <form class="card needs-validation" novalidate [formGroup]="employeeForm" (ngSubmit)="saveEmployee()">
+
+    <div class="card-title">
+        <button class="btn" (click)="close()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg"
+                viewBox="0 0 16 16">
+                <path
+                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+            </svg>
+        </button>
+    </div>
+
     <div class="form-group">
         <label for="firstName">First Name:</label>
         <input type="text" class="form-control" id="firstName" formControlName="firstName"
-            [class.is-invalid]="employeeForm.get('firstName').invalid && (employeeForm.get('firstName').dirty || employeeForm.get('firstName').touched)"
-            [class.is-valid]="employeeForm.get('firstName').valid && (employeeForm.get('firstName').dirty)">
+            [ngClass]="{ 'is-invalid': isInvalid('firstName') ,'is-valid':isValid('firstName')}">
         <div *ngIf="employeeForm.controls['firstName'].errors && employeeForm.controls['firstName'].errors['required']"
-            class="invalid-feedback">First Name is
-            required.</div>
+            class="invalid-feedback">First Name is required.</div>
+        <div *ngIf="employeeForm.controls['firstName'].errors && (employeeForm.controls['firstName'].errors['minlength'] || employeeForm.controls['firstName'].errors['maxlength'])"
+            class="invalid-feedback">First Name must be between 2-10 chars.</div>
     </div>
 
     <div class="form-group">
         <label for="lastName">Last Name:</label>
         <input type="text" class="form-control" id="lastName" formControlName="lastName"
-            [class.is-invalid]="employeeForm.get('lastName').invalid && (employeeForm.get('lastName').dirty || employeeForm.get('lastName').touched)"
-            [class.is-valid]="employeeForm.get('lastName').valid && (employeeForm.get('lastName').dirty || employeeForm.get('lastName').touched)">
+            [ngClass]="{ 'is-invalid': isInvalid('lastName') ,'is-valid':isValid('lastName')}">
         <div *ngIf="employeeForm.controls['lastName'].errors && employeeForm.controls['lastName'].errors['required']"
-            class="invalid-feedback">Last Name is
-            required.</div>
+            class="invalid-feedback">Last Name is required.</div>
+        <div *ngIf="employeeForm.controls['lastName'].errors && (employeeForm.controls['lastName'].errors['minlength'] || employeeForm.controls['firstName'].errors['maxlength'])"
+            class="invalid-feedback">Last Name must be between 2-10 chars.</div>
     </div>
 
     <div class="form-group">
         <label for="identity">Identity:</label>
         <input type="text" class="form-control" id="identity" formControlName="identity"
-            [class.is-invalid]="employeeForm.get('identity').invalid && (employeeForm.get('identity').dirty || employeeForm.get('identity').touched)"
-            [class.is-valid]="employeeForm.get('identity').valid && (employeeForm.get('identity').dirty || employeeForm.get('identity').touched)">
+            [ngClass]="{ 'is-invalid': isInvalid('identity') ,'is-valid':isValid('identity')}">
         <div *ngIf="employeeForm.controls['identity'].errors && employeeForm.controls['identity'].errors['required']"
-            class="invalid-feedback">Identity is
-            required.</div>
+            class="invalid-feedback">Identity is required.</div>
+        <div *ngIf="employeeForm.controls['identity'].errors && employeeForm.controls['identity'].errors['pattern']"
+            class="invalid-feedback">Identity must be exactly 9 digits.</div>
     </div>
 
     <div class="form-group">
         <label for="startWorkDate">Start Work Date:</label>
-        <input type="date" class="form-control" id="startWorkDate" formControlName="startWorkDate"
-            [class.is-invalid]="employeeForm.get('startWorkDate').invalid && (employeeForm.get('startWorkDate').dirty || employeeForm.get('startWorkDate').touched)"
-            [class.is-valid]="employeeForm.get('startWorkDate').valid && (employeeForm.get('startWorkDate').dirty || employeeForm.get('startWorkDate').touched)">
+        <input type="text" onfocus="(this.type='date')" onblur="(this.type= this.value ? 'date' : 'text')"
+            class="form-control" id="startWorkDate" formControlName="startWorkDate"
+            [ngClass]="{ 'is-invalid': isInvalid('startWorkDate') ,'is-valid':isValid('startWorkDate')}">
         <div *ngIf="employeeForm.controls['startWorkDate'].errors && employeeForm.controls['startWorkDate'].errors['required']"
-            class="invalid-feedback">Start Work
-            Date is required.</div>
+            class="invalid-feedback">Start Work Date is required.</div>
+        <div *ngIf="employeeForm.get('startWorkDate').errors && employeeForm.get('startWorkDate').errors['startDate']"
+            class="invalid-feedback">Start work date cannot be a future date.</div>
     </div>
 
     <div class="form-group">
         <label for="birthDate">Birth Date:</label>
-        <input type="date" class="form-control" id="birthDate" formControlName="birthDate"
-            [class.is-invalid]="employeeForm.get('birthDate').invalid && (employeeForm.get('birthDate').dirty || employeeForm.get('birthDate').touched)"
-            [class.is-valid]="employeeForm.get('birthDate').valid && (employeeForm.get('birthDate').dirty || employeeForm.get('birthDate').touched)">
+        <input type="text" onfocus="(this.type='date')" onblur="(this.type= this.value ? 'date' : 'text')"
+            class="form-control" id="birthDate" formControlName="birthDate"
+            [ngClass]="{ 'is-invalid': isInvalid('birthDate') ,'is-valid':isValid('birthDate')}">
         <div *ngIf="employeeForm.controls['birthDate'].errors && employeeForm.controls['birthDate'].errors['required']"
-            class="invalid-feedback">Birth Date is
-            required.</div>
+            class="invalid-feedback">Birth Date is required.</div>
+        <div *ngIf="employeeForm.get('birthDate').errors && employeeForm.get('birthDate').errors['minAge']"
+            class="invalid-feedback">Birth date must be at least 16 years ago.</div>
     </div>
 
     <div class="form-group">
         <label for="gender">Gender:</label>
         <select class="form-control" id="gender" formControlName="gender"
-            [class.is-invalid]="employeeForm.get('gender').invalid && (employeeForm.get('gender').dirty || employeeForm.get('gender').touched)"
-            [class.is-valid]="employeeForm.get('gender').valid && (employeeForm.get('gender').dirty || employeeForm.get('gender').touched)">
+            [ngClass]="{ 'is-invalid': isInvalid('gender') ,'is-valid':isValid('gender')}">
             <option [value]="genders[0]">Male</option>
             <option [value]="genders[1]">Female</option>
         </select>
         <div *ngIf="employeeForm.controls['gender'].errors && employeeForm.controls['gender'].errors['required']"
-            class="invalid-feedback">Gender is
-            required.</div>
+            class="invalid-feedback">Gender is required.</div>
     </div>
 
 
-    <!-- <div class="form-group">
-        <label>Roles:</label>
-        <div *ngFor="let role of employeeForm.get('roles').getRawValue(); let i = index" class="d-flex align-items-center mb-2">
-            <select class="form-control me-2" formControlName="{{ i }}.roleType">
-                <option *ngFor="let roleType of roleTypes" [value]="roleType">{{ roleType }}</option>
-            </select>
-            <input type="date" class="form-control me-2" formControlName="{{ i }}.startDate">
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="{{ 'isAdmin_' + i }}" formControlName="{{ i }}.isAdministrative">
-                <label class="form-check-label" for="{{ 'isAdmin_' + i }}">Is Administrative</label>
-            </div>
-            <button type="button" class="btn btn-danger" (click)="removeRole(i)">Remove</button>
-        </div>
-        <button type="button" class="btn btn-success mt-2" (click)="addRole()">Add Role</button>
-        <div *ngIf="employeeForm.get('roles').invalid && (employeeForm.get('roles').dirty || employeeForm.get('roles').touched)">
-            <div *ngIf="employeeForm.get('roles').errors && employeeForm.get('roles').errors['required']" class="invalid-feedback">At least one role is required.</div>
-        </div>
-    </div> -->
-
-    
     <div formArrayName="roles">
+        <label for="roles">Roles:</label>
+        <div class="roles_title">
+            <p>Role Name</p>
+            <p>Start Date</p>
+        </div>
+
         <div *ngFor="let roleGroup of employeeForm.get('roles').value; let i = index">
             <div [formGroupName]="i" class="d-flex align-items-center mb-2">
-                <select class="form-control me-2" formControlName="roleType">
+                <select class="form-control me-2" formControlName="roleType"
+                    [ngClass]="{ 'is-invalid': isInvalid('roles') ,'is-valid':isValid('roles')}">
                     <option *ngFor="let roleType of roleTypes" [value]="roleType.id">{{ roleType.name }}</option>
                 </select>
-                <input type="date" class="form-control me-2" formControlName="startDate">
-                <button type="button" class="btn btn-danger" (click)="removeRole(i)">Remove</button>
-                <label>
-                    <input type="checkbox" formControlName="isAdministrative"> Management
-                </label>
+                <input type="text" onfocus="(this.type='date')" onblur="(this.type= this.value ? 'date' : 'text')" class="form-control me-2 date" formControlName="startDate"
+                    [ngClass]="{ 'is-invalid': isInvalid('roles') ,'is-valid':isValid('roles')}">
+                <input type="checkbox" formControlName="isAdministrative"> Managerial
+                <button type="button" class="btn" (click)="removeRole(i)" style="color: #dc3545;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-x-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                        <path
+                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                    </svg>
+                </button>
+                <div *ngIf="isInvalid('roles')" class="invalid-feedback">Requiered / Start role date before start work
+                    date / Duplicate roles.</div>
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-success mt-2" (click)="addRole()">Add Role</button>
-    
-    
+    <button type="button" class="btn btn-success add" (click)="addRole()">Add Role</button>
 
     <button type="submit" class="btn btn-primary">Save</button>
 </form>

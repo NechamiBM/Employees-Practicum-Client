@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EmployeeService } from '../employee.service';
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import * as XLSX from 'xlsx';
-import { Employee, Gender } from 'src/app/models/employee.model';
+import { Employee, Gender } from 'src/models/employee.model';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { EmployeeDetailsComponent } from '../employee-details/employee-details.component';
 
 @Component({
   selector: 'employee-list',
@@ -22,6 +24,12 @@ export class EmployeeListComponent implements OnInit {
   }
 
   editEmployee(employee: Employee) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = { employee: employee };
+    dialogConfig.maxHeight = '95vh';
+    dialogConfig.maxWidth = '60vw';
+    const dialogRef =  this.dialog.open(EmployeeDetailsComponent, dialogConfig);
+    dialogRef.componentInstance.employee = employee;
     console.log("edit", employee);
   }
 
@@ -57,7 +65,7 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
-  constructor(private _employeeService: EmployeeService) { }
+  constructor(private _employeeService: EmployeeService,public dialog: MatDialog) { }
 
   ngOnInit() {
     this._employeeService.getEmployees().subscribe(data => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RoleType } from 'src/app/models/roleType.model';
+import { RoleType } from 'src/models/roleType.model';
 import { Observable } from 'rxjs';
 
 @Injectable()
