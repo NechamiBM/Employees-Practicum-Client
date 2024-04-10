@@ -6,7 +6,6 @@ import { EmployeeDetailsComponent } from './modules/employee-module/employee-det
 const APP_ROUTES: Routes = [
   { path: "", redirectTo: "employees", pathMatch: 'full' },
   { path: "employees", component: EmployeeListComponent },
-  { path: "addEmployee", component: EmployeeDetailsComponent },
   { path: "**", redirectTo: "employees", pathMatch: 'full' }
 ];
 

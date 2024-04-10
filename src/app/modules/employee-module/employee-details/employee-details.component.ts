@@ -78,10 +78,10 @@ export class EmployeeDetailsComponent {
     this.formSubmitted = true;
     if (this.employeeForm.valid) {
       const roles: Role[] = this.employeeForm.value.roles.map((role: Role) => {
-        return { roleTypeId: 2, startDate: new Date(role.startDate), isAdministrative: role.isAdministrative ? role.isAdministrative : false };
+        return { roleTypeId: Number(role.roleType) || role.roleType.id, startDate: new Date(role.startDate), isAdministrative: role.isAdministrative ? role.isAdministrative : false };
       });
       const employee: Employee = {
-        id: this.employeeForm.value.id,
+        id: this.employee?.id ? this.employee.id : 0,
         firstName: this.employeeForm.value.firstName,
         lastName: this.employeeForm.value.lastName,
         identity: this.employeeForm.value.identity,
@@ -90,25 +90,26 @@ export class EmployeeDetailsComponent {
         gender: parseInt(this.employeeForm.value.gender),
         roles: roles
       };
-      console.log("id", employee.id);
-      if (employee.id == undefined)
-        this._employeeService.addEmployee(employee).subscribe({
-          next: () => {
-            this.dialogRef.close();
-            window.location.reload();
-          }, error: err => {
-            let error = "";
-            if (err instanceof HttpErrorResponse && err.error && err.error.errors)
-              for (const fieldName in err.error.errors)
-                if (err.error.errors.hasOwnProperty(fieldName))
-                  error = fieldName + ': ' + err.error.errors[fieldName];
-            Swal.fire({ icon: "error", title: "Oops...", text: "saving had failed\n" + error });
-          }
-        });
-      else {
-        this._employeeService.editEmployee(employee).subscribe();
-      }
+      this.addOrEdit(employee).subscribe({
+        next: () => {
+          this.dialogRef.close();
+          window.location.reload();
+        }, error: err => {
+          let error = "";
+          if (err instanceof HttpErrorResponse && err.error && err.error.errors)
+            for (const fieldName in err.error.errors)
+              if (err.error.errors.hasOwnProperty(fieldName))
+                error = fieldName + ': ' + err.error.errors[fieldName];
+          Swal.fire({ icon: "error", title: "Oops...", text: "saving had failed\n" + error });
+        }
+      });
     }
+  }
+
+  addOrEdit(employee: Employee) {
+    if (employee.id == 0)
+      return this._employeeService.addEmployee(employee);
+    return this._employeeService.editEmployee(employee);
   }
 
   close() {

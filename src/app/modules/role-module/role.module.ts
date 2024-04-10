@@ -9,7 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [AddRoleComponent],
-  imports: [CommonModule, BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule,MatDialogModule ],
+  imports: [CommonModule, BrowserModule, HttpClientModule, FormsModule, ReactiveFormsModule, MatDialogModule],
   providers: [RoleService],
   exports: [AddRoleComponent]
 })

@@ -66,8 +66,8 @@
         <label for="gender">Gender:</label>
         <select class="form-control" id="gender" formControlName="gender"
             [ngClass]="{ 'is-invalid': isInvalid('gender') ,'is-valid':isValid('gender')}">
-            <option [value]="genders[0]">Male</option>
-            <option [value]="genders[1]">Female</option>
+            <option [value]="gender" *ngFor="let gender of genders" [selected]="gender === employee?.gender">{{
+                gender == 0 ? "Male" : "Female" }}</option>
         </select>
         <div *ngIf="employeeForm.controls['gender'].errors && employeeForm.controls['gender'].errors['required']"
             class="invalid-feedback">Gender is required.</div>
@@ -87,7 +87,8 @@
                     [ngClass]="{ 'is-invalid': isInvalid('roles') ,'is-valid':isValid('roles')}">
                     <option *ngFor="let roleType of roleTypes" [value]="roleType.id">{{ roleType.name }}</option>
                 </select>
-                <input type="text" onfocus="(this.type='date')" onblur="(this.type= this.value ? 'date' : 'text')" class="form-control me-2 date" formControlName="startDate"
+                <input type="text" onfocus="(this.type='date')" onblur="(this.type= this.value ? 'date' : 'text')"
+                    class="form-control me-2 date" formControlName="startDate"
                     [ngClass]="{ 'is-invalid': isInvalid('roles') ,'is-valid':isValid('roles')}">
                 <input type="checkbox" formControlName="isAdministrative"> Managerial
                 <button type="button" class="btn" (click)="removeRole(i)" style="color: #dc3545;">

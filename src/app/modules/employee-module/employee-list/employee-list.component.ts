@@ -20,7 +20,7 @@ export class EmployeeListComponent implements OnInit {
   deleteEmployee(employee: Employee) {
     this._employeeService.deleteEmployee(employee.id).subscribe(() => {
       this.employees = this.employees.filter(e => e.id != employee.id)
-    }, err => console.log("err", err))
+    }, err => console.error("err", err))
   }
 
   editEmployee(employee: Employee) {
@@ -30,7 +30,6 @@ export class EmployeeListComponent implements OnInit {
     dialogConfig.maxWidth = '60vw';
     const dialogRef =  this.dialog.open(EmployeeDetailsComponent, dialogConfig);
     dialogRef.componentInstance.employee = employee;
-    console.log("edit", employee);
   }
 
   filterEmployees() {
@@ -47,7 +46,6 @@ export class EmployeeListComponent implements OnInit {
 
   exportToExcel() {
     this._employeeService.getEmployees().subscribe(data => {
-      console.log("data", data);
       const workbook = XLSX.utils.book_new();
       const newData = data.map(emp => ({
         id: emp.id, firstName: emp.firstName, lastName: emp.lastName, identity: emp.identity, startWorkDate: emp.startWorkDate, birthDate: emp.birthDate, gender: Gender[emp.gender]
@@ -69,6 +67,7 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit() {
     this._employeeService.getEmployees().subscribe(data => {
+      console.log("employees",data);
       this.employees = data;
     });
     this.loadFromLocalStorage();
