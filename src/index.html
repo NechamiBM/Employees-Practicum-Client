@@ -10,7 +10,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDFS5DUPmqvpmcFyUjBNxO39AjLNL8xmF0",
+      authDomain: "employees-mangemant-project.firebaseapp.com",
+      projectId: "employees-mangemant-project",
+      storageBucket: "employees-mangemant-project.appspot.com",
+      messagingSenderId: "340407150948",
+      appId: "1:340407150948:web:e7697784841be6a6343271"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
 </head>
 <body class="mat-typography">
   <app-root></app-root>

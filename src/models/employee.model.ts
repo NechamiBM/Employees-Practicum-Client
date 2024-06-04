@@ -1,4 +1,4 @@
-import {Role} from "./role.model"
+import { Role } from "./role.model"
 
 export class Employee {
     public id: number;
@@ -14,4 +14,4 @@ export class Employee {
 export enum Gender {
     Male,
     Female
-  }
+}

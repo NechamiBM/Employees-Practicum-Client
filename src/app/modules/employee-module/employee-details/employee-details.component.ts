@@ -123,7 +123,7 @@ export class EmployeeDetailsComponent {
 
   isValid(controlName: string) {
     const control = this.employeeForm.get(controlName);
-    return control && control.valid && (control.dirty);
+    return control && control.valid && control.dirty;
   }
 
   startDateValidator(control: AbstractControl): { [key: string]: any } | null {
